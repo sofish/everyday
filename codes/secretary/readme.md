@@ -7,10 +7,12 @@
 分解日常中我们需要秘书做的事，从语言表述上来说，通常会有两种：
 
 1. REMINDER：`提醒我` `下午 4 点钟` `和网站技术部有一个会议`
+ 
    ```(task/todo/reminder/remind me to) [due] [reminder name]```
   
 2. EVENT：`统计一下年度旅行参加的人数`，在 `周四早上9点之前` 给我一个答复
-  ````[event name] at [location] [due date/time/period] [alert] ```
+
+  ```[event name] at [location] [due date/time/period] [alert] ```
   
 一般来说 REMINDER 都是一时的提醒，像闹钟；EVENT 则是一件实现的需要有时间段去做的事情，比如说在 `周四早上9点之前` 这样的一个时间段。而如果能做到 `9:00am` 给个 alert 就更好了。
   
@@ -19,19 +21,22 @@
 上面是大概的实现规则。不过重点还在于细节。上面的做法是参考了 Fantastical 的使用方法，只是英文的实现，而我发现了 Calendar.app 的实现更绝，可以非常准确地判断我的自然语言输入。其实对于我们来说，也不是说一定要非常智能，而是 **有一个明确的规则（1）** 让用户有规可循（也就是保证本身正确运行），再之才是 **智能解析（2）** 这样的高级功能。而实现这两个点，主要有两个重点：
 
 1. 关键词：todo / reminder / reminder / task / 提醒
+
   关键词可以采用与位置配合匹配方式，也可以加上 `@` `#` `/` `!` `*` 这样的符号做分界匹配。
+  
 2. 时间格式：the next day / 明天 / 明早 9 点
+
   日期的格式有非常多，前期可以配合 monent.js 提供的格式 [#Format](http://momentjs.com/docs/#/displaying/format/)
   
-而难点则是，这些日本的配置，理论上匹配的结果应该如下：
+而难点则是时间和事件的正解，理论上匹配的结果应该如下：
 
 ```js
 {
-title: '做点什么事'
-type: 'REMINDER' || 'EVENT',
-start_date: Date || null,
-deadline: Date || null,
-assign: '指派给谁'
+  title: '做点什么事'
+  type: 'REMINDER' || 'EVENT',
+  start_date: Date || null,
+  deadline: Date || null,
+  assign: '指派给谁'
 }
 ```
 ### 三、终极的目标：
