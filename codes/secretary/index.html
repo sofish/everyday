@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+  <meta charset="UTF-8">
+  <title>Secretary - 用于任务安排的自然语言识别</title>
+  <style>
+    body{padding:50px;font-size:20px;}
+    input{border:none;border-bottom:1px solid #ddd;box-sizing:border-box;height:30px;font-size:inherit;display:block;margin:30px 0;}
+    input, pre{width:60%;min-width:200px;}
+    pre{font-family:Courier, Courier New, monospace;white-space:pre-wrap;color:#080;}
+  </style>
+</head>
+<body>
+<input type="text" placeholder="给我安排点任务吧：提醒我下午 4 点和 HR 开会" onkeyup="parse(this.value)"/>
+<pre>//解析结果会显然在这里</pre>
+
+<script src="lib/moment/min/moment-with-langs.min.js"></script>
+<script src="src/secretary.js"></script>
+<script>
+  function parse(str) {
+    var result = document.querySelector('pre')
+      , text = JSON.stringify(secretary(str));
+    result.innerHTML = text.replace(/(["],)/g, "$1\n  ").replace(/^{/, '{\n  ').replace(/}$/, '\n}');;
+  }
+</script>
+</body>
+</html>
