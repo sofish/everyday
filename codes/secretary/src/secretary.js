@@ -29,7 +29,6 @@
         copy(dest[p], prop);
         continue;
       }
-      console.log(dest, p)
       dest[p] = prop;
     }
     return dest;
