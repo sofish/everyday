@@ -1,0 +1,27 @@
+{
+  "name": "Post",
+  "version": "0.0.1",
+  "main": "server/app.js",
+  "author": "sofish <sofish@icloud.com>",
+  "description": "your private cloud",
+  "keywords": [
+    "cloud",
+    "share",
+    "qiniu"
+  ],
+
+  "license": {
+    "type": "MIT"
+  },
+
+  "scripts": {
+    "start": "node server/app.js"
+  },
+
+  "dependencies": {
+    "formidable": "1.2.11",
+    "mime": "1.0.14"
+  },
+
+  "readmeFilename": "readme.md"
+}
