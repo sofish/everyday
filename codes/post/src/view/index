@@ -1,0 +1,5 @@
+<form id="uploader" method="POST" action="http://up.qiniu.com/" enctype="multipart/form-data">
+  <input type="hidden" name="token" value="{{message}}" />
+  <input name="file" type="file" />
+  <input type="submit" value="Upload" />
+</form>

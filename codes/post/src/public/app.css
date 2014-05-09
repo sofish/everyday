@@ -1,0 +1,41 @@
+/* Reset, using TYPO.CSS
+ * Copyright sofish, MIT license, https://github.com/sofish/typo.css
+ */
+html{color:#555;background:#fff;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;text-rendering:optimizelegibility;}
+body{font:100 1em/1.8 Microsoft Yahei,Hiragino Sans GB,WenQuanYi Micro Hei,sans-serif;}
+.serif{font-family:Palatino,Optima,Songti SC, LiSong Pro,Georgia,serif;}
+.entry{font-size: 0.875em;text-align:justify;}
+
+*{margin:0;padding:0;}
+*, *:before, *:after {-moz-box-sizing:border-box;-webkit-box-sizing:border-box;box-sizing:border-box;}
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section{display:block;}
+audio, canvas, video{display:inline-block;}
+
+table{border-collapse:collapse;border-spacing:0;}
+fieldset, img{border:0;}
+blockquote{padding-left:1.2em;border-left:0.3em solid #1abc9c;}
+blockquote p{margin-bottom:0;}
+acronym, abbr{border-bottom:1px dotted;font-variant:normal;}
+abbr{cursor:help;}
+del{text-decoration:line-through;}
+address, caption, cite, code, dfn, em, th, var{font-style:normal;}
+ul, ol{list-style:none;}
+caption, th{text-align:left;}
+q:before, q:after{content:'';}
+sub, sup{font-size:75%;line-height:0;position:relative;}
+:root sub, :root sup{vertical-align:baseline;}
+sup{top:-0.5em;}
+sub{bottom:-0.25em;}
+a{color:#007BF6;}
+a:hover{text-decoration:underline;}
+ins, a{text-decoration:none;}
+u, .typo-u{border-bottom:1px solid #ff5526;text-decoration:none;}
+mark{padding:1px 2px;background:#FCF8E3;}
+pre, code{font-family:"Courier New",Courier,monospace;white-space:pre-wrap;word-wrap:break-word;}
+code{color:#282;}
+pre code{border:none;color:inherit;}
+pre{background:#f8f8f8;border-bottom:1px solid #eee;padding:1em 1.5em;}
+hr{box-sizing:content-box;margin:2em 0;border:0;border-top:1px dotted #ccc;}
+small, .typo-small, .small, figcaption{font-size:0.8em;color:#999;}
+h1, h2, h3, h4, h5, h6{font-weight:100;}
+

@@ -3,7 +3,35 @@ var http = require('http')
   , fs = require('fs')
   , formidable = require('formidable')
   , mime = require('mime')
-  , layout = fs.readFileSync(__dirname + '/view/layout')
+  , path = require('path')
+  , crypto = require('crypto')
+  , layout = fs.readFileSync(path.resolve(__dirname, '../view/layout')).toString()
+
+function URLSafeBase64(str) {
+  return new Buffer(str).toString('base64').replace(/\//g, '_').replace(/\+/g, '-');
+}
+
+// 生成七牛的上传验证
+function qiniu() {
+  var ak = '3iMlsbiNRlBMWSxnqDCJHZhvCjpUWP6NSduGtOUi'
+    , sk = 'y06cdj5GSIa-AABznra2vp8X0D6lUs-h9cJeBV9F';
+
+  var key = {
+      scope: 'block:sofish',
+      deadline: Math.round((new Date).getTime/1000) + 3600000
+    };
+
+  // URL Safe Base64
+  var policy = URLSafeBase64(JSON.stringify(key));
+
+  // 创建 hmac_sha1 并 decode
+  console.log(policy);
+  var sign = URLSafeBase64(crypto.createHmac('sha1', sk).update(policy).digest('hex'));
+  console.log(sign);
+
+  // 七牛上传凭证形式
+  return ak + ':' + sign + ':' + policy;
+}
 
 // 发送数据
 function send(res, options) {
@@ -13,38 +41,35 @@ function send(res, options) {
 }
 
 // 生成页面
-function render(name, message, code) {
-  var html, pathname = __dirname + '/view/' + name;
+function render(name, options) {
+  var html, pathname = path.resolve(__dirname,  '../view/' + name);
 
+  options = options || {};
   html = fs.existsSync(pathname) ? fs.readFileSync(pathname).toString() : '';
-  html = html.replace('{{message}}', message || '').replace();
+  html = html.replace('{{message}}', options.message || '');
   html = layout.replace('{{body}}', html);
 
   send(this, {
-    code: code || 200,
+    code: options.code || 200,
     data: html,
-    header: {
-      'Content-Type': 'text/html',
-      'Content-Length': html.length
-    }
+    header: {'Content-Type': 'text/html'}
   })
 }
 
 // 静态文件
 function statics(pathname) {
 
+  var pathname = path.resolve(__dirname, '..' + pathname);
+
   // 没找到文件，或者他是一个文件夹
-  if(fs.existsSync(pathname) || !fs.statSync(pathname).isFile()) return send(this, { code: 404, data: ''});
+  if(!(fs.existsSync(pathname) || fs.statSync(pathname).isFile())) return send(this, { code: 404, data: ''});
 
   var type = mime.lookup(pathname) || 'text/plain';
 
   send(this, {
     code: 200,
-    data: fs.readFileSync(pathname),
-    header: {
-      'Content-Type': type,
-      'Expires': 365 * 24 * 3600 + (new Date).getTime()
-    }
+    data: fs.readFileSync(pathname).toString(),
+    header: { 'Content-Type': type }
   });
 }
 
@@ -56,15 +81,19 @@ http.createServer(function(req, res) {
 
   // 首页
   if(pathname === '/') {
-    render.call(res, 'index');
-
+    render.call(res, 'index', { message: qiniu() });
   // 静态文件处理
-  } else if (pathname.match(/^\/static\/.+/)) {
-    statics(pathname);
+  } else if (pathname.match(/^\/public\/.+/)) {
+    statics.call(res, pathname);
 
   // 其他所有请求都直接 404
   } else {
-    render.call(res, 'nofound', 'The document is not exist!', 404);
+    render.call(res, 'nofound', {
+      message: 'The document is not exist!',
+      code: 404
+    });
   }
 
 }).listen(7676);
+
+console.log('The app is running');

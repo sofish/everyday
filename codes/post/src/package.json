@@ -20,7 +20,8 @@
 
   "dependencies": {
     "formidable": "1.2.11",
-    "mime": "1.0.14"
+    "mime": "1.0.14",
+    "urlsafe-base64": "0.0.2"
   },
 
   "readmeFilename": "readme.md"

@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Post - 个人私有分享云</title>
+  <link rel="stylesheet" href="/public/app.css">
+</head>
+<body>
+{{body}}
+
+
+<script src="/public/recorder.js"></script>
+<script src="/public/app.js"></script>
+
+</body>
+</html>
