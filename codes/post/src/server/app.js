@@ -8,7 +8,11 @@ var http = require('http')
   , layout = fs.readFileSync(path.resolve(__dirname, '../view/layout')).toString()
 
 function URLSafeBase64(str) {
-  return new Buffer(str).toString('base64').replace(/\//g, '_').replace(/\+/g, '-');
+  return URLSafe(new Buffer(str).toString('base64'));
+}
+
+function URLSafe(str) {
+  return str.replace(/\//g, '_').replace(/\+/g, '-');
 }
 
 // 生成七牛的上传验证
@@ -16,18 +20,18 @@ function qiniu() {
   var ak = '3iMlsbiNRlBMWSxnqDCJHZhvCjpUWP6NSduGtOUi'
     , sk = 'y06cdj5GSIa-AABznra2vp8X0D6lUs-h9cJeBV9F';
 
+  // NOTE: 七牛并不是因为文件内容来管理文件，而是根据文件名来管理，这点很奇怪
+  // REF: http://developer.qiniu.com/docs/v6/api/reference/security/put-policy.html
   var key = {
-      scope: 'block:sofish',
-      deadline: Math.round((new Date).getTime/1000) + 3600000
+      scope: 'block',
+      deadline: 1451491222
     };
 
   // URL Safe Base64
   var policy = URLSafeBase64(JSON.stringify(key));
 
   // 创建 hmac_sha1 并 decode
-  console.log(policy);
-  var sign = URLSafeBase64(crypto.createHmac('sha1', sk).update(policy).digest('hex'));
-  console.log(sign);
+  var sign = URLSafe(crypto.createHmac('sha1', sk).update(policy).digest('base64'));
 
   // 七牛上传凭证形式
   return ak + ':' + sign + ':' + policy;
